@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galeri Luar Angkasa</title>
+    <!-- Memuat Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Impor font Inter dari Google Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Menggunakan font Inter sebagai font default */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #00001a;
+            overflow-x: hidden; /* Mencegah scroll horizontal */
+        }
+
+        /* Lapisan untuk latar belakang bintang bergerak */
+        #star-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 200%;
+            height: 100%;
+            background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
+            background-color: #050a1c;
+            background-repeat: repeat;
+            z-index: -10;
+            animation: move-stars 120s linear infinite;
+        }
+
+        @keyframes move-stars {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+
+        /* --- Animasi "WOW" Baru --- */
+
+        /* Elemen mengambang */
+        .floating {
+            position: fixed;
+            z-index: -5;
+            opacity: 0.5;
+            pointer-events: none; /* Biar tidak bisa diklik */
+        }
+        @keyframes float-1 {
+            0%, 100% { transform: translateY(0) translateX(0) rotate(0deg); }
+            50% { transform: translateY(-25px) translateX(15px) rotate(8deg); }
+        }
+        @keyframes float-2 {
+            0%, 100% { transform: translateY(0) translateX(0) rotate(0deg); }
+            50% { transform: translateY(20px) translateX(-10px) rotate(-5deg); }
+        }
+        .float-1 { animation: float-1 10s ease-in-out infinite; }
+        .float-2 { animation: float-2 14s ease-in-out infinite; }
+
+        /* Glow untuk kontainer utama */
+        .main-container-glow {
+            box-shadow: 0 0 25px rgba(0, 170, 255, 0.3), 0 0 50px rgba(76, 29, 149, 0.2);
+            animation: pulse-glow 5s infinite ease-in-out;
+        }
+        @keyframes pulse-glow {
+            0%, 100% { 
+                box-shadow: 0 0 25px rgba(0, 170, 255, 0.3), 0 0 50px rgba(76, 29, 149, 0.2); 
+            }
+            50% { 
+                box-shadow: 0 0 35px rgba(0, 170, 255, 0.5), 0 0 70px rgba(76, 29, 149, 0.3); 
+            }
+        }
+
+        /* Animasi intro */
+        #intro-screen {
+            background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+            overflow: hidden;
+            transition: opacity 1.5s ease-out;
+        }
+
+        /* Getaran roket intro */
+        @keyframes rocket-shake {
+            0%, 100% { transform: translateX(0) rotate(0); }
+            20% { transform: translateX(-3px) rotate(-2deg); }
+            40% { transform: translateX(3px) rotate(2deg); }
+            60% { transform: translateX(-3px) rotate(-2deg); }
+            80% { transform: translateX(3px) rotate(2deg); }
+        }
+        .rocket-intro {
+            /* Mulai bergetar setelah 1 detik */
+            animation: rocket-shake 0.5s ease-in-out infinite 1s;
+        }
+        
+        /* Teks intro berdenyut */
+        @keyframes pulse-deep {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.05); }
+        }
+        .intro-text {
+            animation: pulse-deep 2.5s infinite;
+            text-shadow: 0 0 10px #00aaff, 0 0 20px #00aaff;
+        }
+
+        /* Animasi fade in untuk konten utama */
+        .content-fade-in {
+            animation: fadeIn 1.5s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Latar Belakang Bintang Bergerak -->
+    <div id="star-bg"></div>
+
+    <!-- Elemen Mengambang "WOW" -->
+    <div class="floating float-1" style="top: 10%; left: 10%; font-size: 3rem; opacity: 0.4;">🪐</div>
+    <div class="floating float-2" style="top: 20%; right: 15%; font-size: 2rem; opacity: 0.6;">✨</div>
+    <div class="floating float-1" style="bottom: 15%; right: 10%; font-size: 4rem; opacity: 0.3;">💫</div>
+    <div class="floating float-2" style="bottom: 25%; left: 15%; font-size: 2.5rem; opacity: 0.5;">🛰️</div>
+    <div class="floating float-1" style="top: 60%; left: 20%; font-size: 3rem; opacity: 0.2;">☄️</div>
+
+    <!-- Layar Intro Animasi (DIPERBARUI) -->
+    <div id="intro-screen" class="fixed top-0 left-0 w-full h-screen flex flex-col items-center justify-center z-50">
+        <!-- Roket akan bergetar lalu meluncur ke atas -->
+        <svg class="rocket-intro w-24 h-24 text-blue-300 mb-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.82m5.84-2.56v4.82a6 6 0 01-1.93 4.25 6 6 0 01-4.25 1.93 6 6 0 01-4.25-1.93 6 6 0 01-1.93-4.25 6 6 0 011.93-4.25 6 6 0 014.25-1.93 6 6 0 014.25 1.93 6 6 0 011.93 4.25z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 9.5l-3-3m0 0l-3 3m3-3v11.181a6.004 6.004 0 00-3-3.818 6.004 6.004 0 00-6 0 6.004 6.004 0 00-3 3.818V6.5l3-3m0 0l3 3m-3-3h.008v.008H16.5z" />
+        </svg>
+        <h1 class="intro-text text-3xl md:text-5xl font-black text-white">
+            MELUNCURKAN KENANGAN
+        </h1>
+        <p class="text-lg text-blue-200 mt-2">Menghitung mundur...</p>
+    </div>
+
+    <!-- Konten Utama Halaman (Awalnya tersembunyi) -->
+    <main id="main-content" class="hidden relative z-10 p-6 md:p-12">
+        <!-- Kontainer utama dengan layout baru dan efek glow -->
+        <div class="main-container-glow max-w-4xl mx-auto bg-black bg-opacity-70 backdrop-blur-lg rounded-2xl shadow-2xl overflow-hidden">
+            
+            <!-- Header -->
+            <header class="p-6 text-center border-b border-gray-700">
+                <h1 class="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
+                    Galeri Astronot-ku
+                </h1>
+                <p class="text-lg text-gray-300 mt-2">Sebuah Perjalanan di Antara Bintang</p>
+                <!-- BARU: Menambahkan nama kamu -->
+                <p class="text-md text-gray-400 mt-3 italic">by Reza Alfiyana</p>
+            </header>
+
+            <!-- Konten (Layout 1 Kolom) -->
+            <div class="p-6 md:p-8">
+                
+                <!-- Musik Player -->
+                <section class="mb-10">
+                    <h2 class="text-2xl font-bold mb-4 text-blue-300 flex items-center gap-2">
+                        <span class="text-3xl">🚀</span> Soundtrack Perjalanan
+                    </h2>
+                    <!-- DIUBAH: Menambahkan border agar tidak polos -->
+                    <audio id="song" controls class="w-full rounded-lg border border-blue-500/50" controlsList="nodownload">
+                        <!-- 
+                          ! PENTING !
+                          Ganti tanda # di bawah ini dengan path (lokasi) file lagu kamu,
+                          Contoh: src="musik/nadhif-bergema.mp3"
+                        -->
+                        <source src="Penjaga Hati X Bergema Sampai Selamanya by Nadhif Basalamah (MASHUP BY RANGNOV).mp3" type="audio/mpeg">
+                        Browser kamu tidak mendukung pemutar audio.
+                    </audio>
+                    <p class="text-sm text-gray-400 mt-2">
+                        🎶 Nadhif Basalamah - Bergema
+                    </p>
+                </section>
+                
+                <!-- Galeri Foto (Grid Baru) -->
+                <section class="mb-10">
+                    <h2 class="text-2xl font-bold mb-4 text-blue-300 flex items-center gap-2">
+                        <span class="text-3xl">🪐</span> Galeri Foto
+                    </h2>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+                        <!-- 
+                          ! PENTING !
+                          Ganti src="..." pada tag <img> di bawah ini dengan foto-foto kamu.
+                          Ukuran sekarang akan dipaksa sama (aspect ratio 2:3) dan dicrop otomatis.
+                        -->
+                        
+                        <!-- DIUBAH: Struktur bingkai foto untuk memotong gambar (cropping) -->
+                        <div class="w-full aspect-[2/3] rounded-lg overflow-hidden shadow-lg transform hover:scale-105 hover:shadow-blue-400/50 transition-all duration-300">
+                            <img src="WhatsApp Image 2025-11-02 at 15.18.07_e9f2859f.jpg" 
+                                 alt="Foto Potret 1" 
+                                 class="w-full h-full object-cover">
+                        </div>
+                        
+                        <!-- DIUBAH: Struktur bingkai foto untuk memotong gambar (cropping) -->
+                        <div class="w-full aspect-[2/3] rounded-lg overflow-hidden shadow-lg transform hover:scale-105 hover:shadow-purple-400/50 transition-all duration-300">
+                            <img src="WhatsApp Image 2025-11-02 at 15.18.16_0b147e6e.jpg" 
+                                 alt="Foto Potret 2" 
+                                 class="w-full h-full object-cover">
+                        </div>
+                             
+                        <!-- DIUBAH: Struktur bingkai foto untuk memotong gambar (cropping) -->
+                        <div class="w-full aspect-[2/3] rounded-lg overflow-hidden shadow-lg transform hover:scale-105 hover:shadow-emerald-400/50 transition-all duration-300">
+                            <img src="WhatsApp Image 2025-11-02 at 18.33.23_3a897607.jpg" 
+                                 alt="Foto Potret 3" 
+                                 class="w-full h-full object-cover">
+                        </div>
+                        
+                        <!-- Tambahkan lebih banyak foto jika perlu -->
+                        <!-- DIUBAH: Struktur bingkai foto untuk memotong gambar (cropping) -->
+                        <div class="w-full aspect-[2/3] rounded-lg overflow-hidden shadow-lg transform hover:scale-105 hover:shadow-red-400/50 transition-all duration-300">
+                             <img src="WhatsApp Image 2025-11-02 at 18.33.24_f3b90def.jpg" 
+                                 alt="Foto Potret 4" 
+                                 class="w-full h-full object-cover">
+                        </div>
+                        
+                        <!-- DIUBAH: Struktur bingkai foto untuk memotong gambar (cropping) -->
+                        <div class="w-full aspect-[2/3] rounded-lg overflow-hidden shadow-lg transform hover:scale-105 hover:shadow-indigo-400/50 transition-all duration-300">
+                            <img src="WhatsApp Image 2025-11-02 at 18.33.25_bba97fb5.jpg" 
+                                 alt="Foto Potret 5" 
+                                 class="w-full h-full object-cover">
+                        </div>
+                             
+                        <!-- DIUBAH: Struktur bingkai foto untuk memotong gambar (cropping) -->
+                        <div class="w-full aspect-[2/3] rounded-lg overflow-hidden shadow-lg transform hover:scale-105 hover:shadow-yellow-400/50 transition-all duration-300">
+                            <img src="WhatsApp Image 2025-11-02 at 18.33.27_f0c1b17e.jpg" 
+                                 alt="Foto Potret 6" 
+                                 class="w-full h-full object-cover">
+                        </div>
+
+                        <!-- Tambahkan lebih banyak foto jika perlu -->
+                        <!-- DIUBAH: Struktur bingkai foto untuk memotong gambar (cropping) -->
+                        <div class="w-full aspect-[2/3] rounded-lg overflow-hidden shadow-lg transform hover:scale-105 hover:shadow-red-400/50 transition-all duration-300">
+                             <img src="WhatsApp Image 2025-11-02 at 18.33.25_828fe735.jpg" 
+                                 alt="Foto Potret 4" 
+                                 class="w-full h-full object-cover">
+                        </div>
+                        
+                        <!-- DIUBAH: Struktur bingkai foto untuk memotong gambar (cropping) -->
+                        <div class="w-full aspect-[2/3] rounded-lg overflow-hidden shadow-lg transform hover:scale-105 hover:shadow-indigo-400/50 transition-all duration-300">
+                            <img src="WhatsApp Image 2025-11-02 at 18.33.45_13b596ce.jpg" 
+                                 alt="Foto Potret 5" 
+                                 class="w-full h-full object-cover">
+                        </div>
+                             
+                        <!-- DIUBAH: Struktur bingkai foto untuk memotong gambar (cropping) -->
+                        <div class="w-full aspect-[2/3] rounded-lg overflow-hidden shadow-lg transform hover:scale-105 hover:shadow-yellow-400/50 transition-all duration-300">
+                            <img src="WhatsApp Image 2025-11-02 at 18.33.24_32b32b35.jpg" 
+                                 alt="Foto Potret 6" 
+                                 class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Video -->
+                <section>
+                    <h2 class="text-2xl font-bold mb-4 text-blue-300 flex items-center gap-2">
+                        <span class="text-3xl">🛰️</span> Log Video
+                    </h2>
+                    <div class="flex justify-center">
+                        <!-- 
+                          ! PENTING !
+                          Ganti tag <video> di bawah ini.
+                          Ganti poster="..." dengan gambar thumbnail video kamu.
+                          Ganti src="..." di dalam <source> dengan file video kamu.
+                        -->
+                        <video class="w-full max-w-md rounded-lg shadow-lg" 
+                               controls 
+                               poster="https://placehold.co/400x600/b91c1c/white?text=Video+Kamu">
+                            <source src="WhatsApp Video 2025-11-02 at 18.33.44_2972defc.mp4" type="video/mp4">
+                            Browser kamu tidak mendukung pemutar video.
+                        </video>
+                    </div>
+                </section>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        window.addEventListener('load', () => {
+            const introScreen = document.getElementById('intro-screen');
+            const introRocket = document.querySelector('.rocket-intro');
+            const mainContent = document.getElementById('main-content');
+            const audio = document.getElementById('song');
+
+            // 1. Logika untuk Intro (DIPERBARUI)
+            // Tunggu 3.5 detik (waktu roket bergetar)
+            setTimeout(() => {
+                
+                // Hentikan getaran dan luncurkan roket!
+                if (introRocket) {
+                    introRocket.style.animation = 'none'; // Hentikan getaran
+                    introRocket.style.transition = 'transform 1s ease-in, opacity 0.5s ease-in 0.3s';
+                    introRocket.style.transform = 'translateY(-200px)'; // Meluncur ke atas
+                    introRocket.style.opacity = '0';
+                }
+
+                // Mulai fade out layar intro (setelah roket mulai meluncur)
+                introScreen.style.opacity = '0';
+                
+                // Setelah animasi intro selesai (1.5 detik)
+                setTimeout(() => {
+                    introScreen.style.display = 'none';
+                    // Tampilkan konten utama dengan animasi fade-in
+                    mainContent.style.display = 'block';
+                    mainContent.classList.add('content-fade-in');
+                }, 1500); // Sesuaikan dengan transisi opacity introScreen
+
+            }, 3500); // 3.5 detik
+        });
+    </script>
+
+</body>
+</html>
+
+
